@@ -28,8 +28,11 @@ function App() {
       }, 500);
     };
 
-    script.onerror = () => {
-      console.error('Failed to load Botpress WebChat script');
+    script.onerror = (e) => {
+      console.error('Failed to load Botpress WebChat script', e);
+      if (e && e.message) {
+        console.error('Error message:', e.message);
+      }
     };
 
     document.body.appendChild(script);
