@@ -17,7 +17,14 @@ function App() {
           mobileBreakpoint: 0,
           // ...other options...
         });
+        // Force open for debugging
+        window.botpressWebChat.open();
+      } else {
+        console.error('Botpress WebChat not found on window');
       }
+    };
+    script.onerror = () => {
+      console.error('Failed to load Botpress WebChat script');
     };
     document.body.appendChild(script);
   }, []);
