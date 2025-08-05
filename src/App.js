@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import Webchat from '@botpress/webchat';
+import { Webchat } from '@botpress/webchat'; // <-- use named import
 
 function App() {
   return (
