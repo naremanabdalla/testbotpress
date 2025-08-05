@@ -23,7 +23,11 @@ function App() {
           });
           window.botpressWebChat.open();
         } else {
-          console.error('Botpress WebChat not found on window after delay');
+          if (window.console && window.console.error) {
+            window.console.error('Botpress WebChat not found on window after delay');
+            window.console.error('Possible causes: Content Security Policy (CSP) blocking script execution, browser extension interference, or network restrictions.');
+            window.console.error('Check for CSP errors in the browser console and try disabling extensions or using a different network.');
+          }
         }
       }, 500);
     };
