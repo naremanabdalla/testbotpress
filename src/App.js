@@ -1,8 +1,31 @@
+import { useState, useEffect } from 'react';
+import {
+  Webchat,
+  WebchatProvider,
+  Fab,
+  getClient,
+  Configuration,
+} from '@botpress/webchat';
 import logo from './logo.svg';
 import './App.css';
-import React, { useEffect } from 'react';
 
-function App() {
+const clientId = 'e4daeba3-c296-4803-9af6-91c0c80ab5de';
+
+const configuration = {
+  color: '#000',
+};
+
+export default function App() {
+  const client = getClient({
+    clientId,
+  });
+
+  const [isWebchatOpen, setIsWebchatOpen] = useState(false);
+
+  const toggleWebchat = () => {
+    setIsWebchatOpen((prevState) => !prevState);
+  };
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
@@ -34,7 +57,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{ width: '100vw', height: '100vh' }}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -51,8 +74,16 @@ function App() {
       </header>
       <h1>Welcome to My Botpress App</h1>
       {/* Botpress Webchat React component */}
+      <WebchatProvider client={client} configuration={configuration}>
+        <Fab onClick={toggleWebchat} />
+        <div
+          style={{
+            display: isWebchatOpen ? 'block' : 'none',
+          }}
+        >
+          <Webchat />
+        </div>
+      </WebchatProvider>
     </div>
   );
 }
-
-export default App;
