@@ -3,65 +3,39 @@ import './App.css';
 
 function App() {
   useEffect(() => {
-  const loadBotpress = () => {
-    return new Promise((resolve) => {
-      if (window.botpressWebChat) return resolve();
-
-      const script = document.createElement('script');
-      script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-      script.id = 'botpress-script';
+    // Create script element
+    const script = document.createElement('script');
+    script.src = 'https://cdn.botpress.cloud/webchat/v1/inject.js';
+    script.async = true;
+    
+    script.onload = () => {
+      window.botpressWebChat.init({
+        botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
+        hostUrl: 'https://cdn.botpress.cloud/webchat/v1',
+        messagingUrl: 'https://messaging.botpress.cloud',
+        showWidget: true,
+        containerWidth: '100%',
+        layoutWidth: '100%',
+        hideWidget: false,
+        stylesheet: 'https://cdn.botpress.cloud/webchat/v1/default.css'
+      });
       
-      script.onload = () => {
-        // More reliable waiting mechanism
-        const waitForInit = setInterval(() => {
-          if (window.botpressWebChat?.init) {
-            clearInterval(waitForInit);
-            resolve();
-          }
-        }, 100);
-      };
+      window.botpressWebChat.onEvent(() => {
+        window.botpressWebChat.open();
+      }, ['LIFECYCLE.LOADED']);
+    };
 
-      document.body.appendChild(script);
-    });
-  };
+    document.body.appendChild(script);
 
-  loadBotpress().then(() => {
-    window.botpressWebChat.init({
-      botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
-      hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
-      messagingUrl: 'https://messaging.botpress.cloud',
-      clientId: 'your-client-id' // Add if available
-    });
-  }).catch(console.error);
-
-  return () => {
-    const script = document.getElementById('botpress-script');
-    script?.parentNode?.removeChild(script);
-  };
-}, []);
-
-  const initializeWebChat = () => {
-    console.log('Initializing Botpress WebChat');
-    window.botpressWebChat.init({
-      botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
-      hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
-      messagingUrl: 'https://messaging.botpress.cloud',
-      clientId: 'YOUR_CLIENT_ID', // Add if you have one
-      showWidget: true,
-      enableTranscriptDownload: true,
-      closeOnEscape: true,
-      showConversationsButton: true,
-      enablePersistHistory: true,
-    });
-    window.botpressWebChat.onEvent(() => {
-      window.botpressWebChat.open();
-    }, ['LIFECYCLE.LOADED']);
-  };
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <div className="App">
-      <h1>Welcome to My Botpress App</h1>
-      <div id="bp-webchat"></div>
+      <h1>Botpress Webchat Test</h1>
+      <div id="webchat-container" style={{ height: '500px', width: '100%' }}></div>
     </div>
   );
 }
