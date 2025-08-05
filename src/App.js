@@ -3,60 +3,42 @@ import './App.css';
 
 function App() {
   useEffect(() => {
-    // First check if the script is already loaded
-    if (window.botpressWebChat) {
-      initializeWebChat();
-      return;
-    }
+  const loadBotpress = () => {
+    return new Promise((resolve) => {
+      if (window.botpressWebChat) return resolve();
 
-    // Check if script tag already exists
-    const existingScript = document.querySelector('script[src*="botpress"]');
-    if (existingScript) {
-      const checkInterval = setInterval(() => {
-        if (window.botpressWebChat) {
-          clearInterval(checkInterval);
-          initializeWebChat();
-        }
-      }, 100);
-      return;
-    }
-
-    // Create new script tag
-    const script = document.createElement('script');
-    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
-      // Keep checking for botpressWebChat to be available
-      const maxAttempts = 50;
-      let attempts = 0;
+      const script = document.createElement('script');
+      script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
+      script.id = 'botpress-script';
       
-      const checkForBotpress = setInterval(() => {
-        attempts++;
-        if (window.botpressWebChat) {
-          clearInterval(checkForBotpress);
-          initializeWebChat();
-        } else if (attempts >= maxAttempts) {
-          clearInterval(checkForBotpress);
-          console.error('Botpress WebChat not available after multiple attempts');
-        }
-      }, 200);
-    };
+      script.onload = () => {
+        // More reliable waiting mechanism
+        const waitForInit = setInterval(() => {
+          if (window.botpressWebChat?.init) {
+            clearInterval(waitForInit);
+            resolve();
+          }
+        }, 100);
+      };
 
-    script.onerror = () => {
-      console.error('Failed to load Botpress script');
-    };
+      document.body.appendChild(script);
+    });
+  };
 
-    document.body.appendChild(script);
+  loadBotpress().then(() => {
+    window.botpressWebChat.init({
+      botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
+      hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
+      messagingUrl: 'https://messaging.botpress.cloud',
+      clientId: 'your-client-id' // Add if available
+    });
+  }).catch(console.error);
 
-    // Cleanup
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
+  return () => {
+    const script = document.getElementById('botpress-script');
+    script?.parentNode?.removeChild(script);
+  };
+}, []);
 
   const initializeWebChat = () => {
     console.log('Initializing Botpress WebChat');
