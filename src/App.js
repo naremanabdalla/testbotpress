@@ -9,7 +9,9 @@ function App() {
     script.async = true;
 
     script.onload = () => {
+      console.log('Botpress script loaded, checking for global...');
       setTimeout(() => {
+        console.log('window.botpressWebChat:', window.botpressWebChat);
         if (window.botpressWebChat) {
           window.botpressWebChat.init({
             botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
