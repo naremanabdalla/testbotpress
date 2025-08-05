@@ -21,12 +21,8 @@ function App() {
     script1.onload = () => {
       window.botpressWebChat.init({
         botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de', // <-- Replace with your Botpress bot ID
-        hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2', // updated to match script version
+        hostUrl: 'https://cdn.botpress.cloud/webchat/v0',
         messagingUrl: 'https://messaging.botpress.cloud',
-        // Optionally force widget to show on mobile
-        showWidget: true,
-        // Optionally set mobile breakpoint
-        mobileBreakpoint: 0,
         // ...other options...
       });
     };
