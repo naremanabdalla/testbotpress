@@ -1,68 +1,16 @@
-import { useState, useEffect } from 'react';
-import {
-  Webchat,
-  WebchatProvider,
-  Fab,
-  getClient,
-  Configuration,
-} from '@botpress/webchat';
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import { Webchat } from '@botpress/webchat';
 
-const clientId = 'e4daeba3-c296-4803-9af6-91c0c80ab5de';
-
-const configuration = {
-  color: '#000',
-};
-
-export default function App() {
-  const client = getClient({
-    clientId,
-  });
-
-  const [isWebchatOpen, setIsWebchatOpen] = useState(false);
-
-  const toggleWebchat = () => {
-    setIsWebchatOpen((prevState) => !prevState);
-  };
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-    script.async = true;
-
-    script.onload = () => {
-      setTimeout(() => {
-        if (window.botpressWebChat) {
-          window.botpressWebChat.init({
-            botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
-            hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
-            messagingUrl: 'https://messaging.botpress.cloud',
-            showWidget: true,
-            mobileBreakpoint: 0,
-            // ...other options...
-          });
-          window.botpressWebChat.open();
-        } else {
-          console.error('Botpress WebChat not found on window after delay');
-        }
-      }, 500);
-    };
-
-    script.onerror = () => {
-      console.error('Failed to load Botpress WebChat script');
-    };
-
-    document.body.appendChild(script);
-  }, []);
-
+function App() {
   return (
-    <div className="App" style={{ width: '100vw', height: '100vh' }}>
+    <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
-        </p>
+        </p>        npm install @botpress/webchat@latest
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -74,16 +22,16 @@ export default function App() {
       </header>
       <h1>Welcome to My Botpress App</h1>
       {/* Botpress Webchat React component */}
-      <WebchatProvider client={client} configuration={configuration}>
-        <Fab onClick={toggleWebchat} />
-        <div
-          style={{
-            display: isWebchatOpen ? 'block' : 'none',
-          }}
-        >
-          <Webchat />
-        </div>
-      </WebchatProvider>
+      <Webchat
+        botId="e4daeba3-c296-4803-9af6-91c0c80ab5de"
+        hostUrl="https://cdn.botpress.cloud/webchat/v3.2"
+        messagingUrl="https://messaging.botpress.cloud"
+        showWidget={true}
+        mobileBreakpoint={0}
+        // ...other props as needed...
+      />
     </div>
   );
 }
+
+export default App;
