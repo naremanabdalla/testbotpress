@@ -26,7 +26,15 @@ function App() {
     };
 
     document.body.appendChild(script);
-
+// Add this temporarily to check script loading
+console.log('Script loading started...');
+script.onload = () => {
+  console.log('Script loaded! Checking for botpressWebChat...');
+  console.log('window.botpressWebChat exists?', !!window.botpressWebChat);
+};
+script.onerror = (e) => {
+  console.error('Script failed to load!', e);
+};
     return () => {
       document.body.removeChild(script);
     };
