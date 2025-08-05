@@ -10,6 +10,7 @@ function App() {
     script.defer = true;
     script.onload = () => {
       if (window.botpressWebChat) {
+        console.log('Botpress WebChat found, initializing...');
         window.botpressWebChat.init({
           botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
           hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
@@ -19,6 +20,8 @@ function App() {
           // ...other options...
         });
         window.botpressWebChat.open();
+      } else {
+        console.error('Botpress WebChat not found on window');
       }
     };
     document.body.appendChild(script);
