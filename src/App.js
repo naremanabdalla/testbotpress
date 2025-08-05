@@ -4,46 +4,34 @@ import React, { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
-    // Check if the script is reachable
-    fetch('https://cdn.botpress.cloud/webchat/v3.2/inject.js')
-      .then(response => {
-        if (response.ok) {
-          console.log('Botpress inject.js is reachable');
-          const script = document.createElement('script');
-          script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-          script.async = true;
+    const script = document.createElement('script');
+    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
+    script.async = true;
 
-          script.onload = () => {
-            console.log('Botpress script loaded');
-            setTimeout(() => {
-              if (window.botpressWebChat) {
-                window.botpressWebChat.init({
-                  botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
-                  hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
-                  messagingUrl: 'https://messaging.botpress.cloud',
-                  showWidget: true,
-                  mobileBreakpoint: 0,
-                  // ...other options...
-                });
-                window.botpressWebChat.open();
-              } else {
-                console.error('Botpress WebChat not found on window after delay');
-              }
-            }, 500);
-          };
-
-          script.onerror = () => {
-            console.error('Failed to load Botpress WebChat script');
-          };
-
-          document.body.appendChild(script);
+    script.onload = () => {
+      console.log('Botpress script loaded');
+      setTimeout(() => {
+        if (window.botpressWebChat) {
+          window.botpressWebChat.init({
+            botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
+            hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
+            messagingUrl: 'https://messaging.botpress.cloud',
+            showWidget: true,
+            mobileBreakpoint: 0,
+            // ...other options...
+          });
+          window.botpressWebChat.open();
         } else {
-          console.error('Botpress inject.js is NOT reachable, status:', response.status);
+          console.error('Botpress WebChat not found on window after delay');
         }
-      })
-      .catch(err => {
-        console.error('Network error fetching Botpress inject.js:', err);
-      });
+      }, 500);
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load Botpress WebChat script');
+    };
+
+    document.body.appendChild(script);
   }, []);
 
   return (
