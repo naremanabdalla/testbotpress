@@ -1,9 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-import { Webchat } from '@botpress/webchat'; // <-- use named import
+import React, { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
+    script.async = true;
+
+    script.onload = () => {
+      setTimeout(() => {
+        if (window.botpressWebChat) {
+          window.botpressWebChat.init({
+            botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
+            hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
+            messagingUrl: 'https://messaging.botpress.cloud',
+            showWidget: true,
+            mobileBreakpoint: 0,
+            // ...other options...
+          });
+          window.botpressWebChat.open();
+        } else {
+          console.error('Botpress WebChat not found on window after delay');
+        }
+      }, 500);
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load Botpress WebChat script');
+    };
+
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -22,14 +51,6 @@ function App() {
       </header>
       <h1>Welcome to My Botpress App</h1>
       {/* Botpress Webchat React component */}
-      <Webchat
-        botId="e4daeba3-c296-4803-9af6-91c0c80ab5de"
-        hostUrl="https://cdn.botpress.cloud/webchat/v3.2"
-        messagingUrl="https://messaging.botpress.cloud"
-        showWidget={true}
-        mobileBreakpoint={0}
-        // ...other props as needed...
-      />
     </div>
   );
 }
