@@ -5,12 +5,11 @@ import React, { useEffect } from 'react';
 // 
 function App() {
   useEffect(() => {
-    let scriptsLoaded = 0;
-    let initialized = false;
-
-    const tryInit = () => {
-      if (scriptsLoaded === 2 && !initialized && window.botpressWebChat) {
-        initialized = true;
+    const script = document.createElement('script');
+    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.botpressWebChat) {
         window.botpressWebChat.init({
           botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
           hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
@@ -21,24 +20,7 @@ function App() {
         });
       }
     };
-
-    const script1 = document.createElement('script');
-    script1.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-    script1.async = true;
-    script1.onload = () => {
-      scriptsLoaded += 1;
-      tryInit();
-    };
-    document.body.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.src = 'https://files.bpcontent.cloud/2025/07/20/18/20250720185318-5YXB2VUJ.js';
-    script2.async = true;
-    script2.onload = () => {
-      scriptsLoaded += 1;
-      tryInit();
-    };
-    document.body.appendChild(script2);
+    document.body.appendChild(script);
   }, []);
 
   return (
@@ -64,3 +46,4 @@ function App() {
 }
 
 export default App;
+         
