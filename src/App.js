@@ -4,10 +4,12 @@ import React, { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
-    let loaded = 0;
-
-    const tryInit = () => {
-      if (loaded === 2 && window.botpressWebChat) {
+    // Only inject Botpress webchat script
+    const script = document.createElement('script');
+    script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
+    script.defer = true;
+    script.onload = () => {
+      if (window.botpressWebChat) {
         window.botpressWebChat.init({
           botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
           hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
@@ -19,24 +21,7 @@ function App() {
         window.botpressWebChat.open();
       }
     };
-
-    const script1 = document.createElement('script');
-    script1.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
-    script1.defer = true;
-    script1.onload = () => {
-      loaded += 1;
-      tryInit();
-    };
-    document.body.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.src = 'https://files.bpcontent.cloud/2025/07/20/18/20250720185318-5YXB2VUJ.js';
-    script2.defer = true;
-    script2.onload = () => {
-      loaded += 1;
-      tryInit();
-    };
-    document.body.appendChild(script2);
+    document.body.appendChild(script);
   }, []);
 
   return (
