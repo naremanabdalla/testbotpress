@@ -57,6 +57,8 @@ function App() {
           Learn React
         </a>
       </header>
+      <h1>Welcome to My Botpress App</h1>
+
       {/* The chat widget will appear automatically */}
     </div>
   );
