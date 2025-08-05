@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+/* Ensure Botpress chat widget is visible */
+.bp-widget,
+#bp-web-widget-container,
+.bp-widget-container {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 9999 !important;
+}
+
+/* Remove any rules that hide fixed elements or set display: none */
+.bp-widget,
+#bp-web-widget-container,
+.bp-widget-container {
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 16px !important;
+}

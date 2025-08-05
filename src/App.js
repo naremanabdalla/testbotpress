@@ -7,25 +7,30 @@ function App() {
     const script = document.createElement('script');
     script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
     script.async = true;
+
     script.onload = () => {
-      if (window.botpressWebChat) {
-        window.botpressWebChat.init({
-          botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
-          hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
-          messagingUrl: 'https://messaging.botpress.cloud',
-          showWidget: true,
-          mobileBreakpoint: 0,
-          // ...other options...
-        });
-        // Force open for debugging
-        window.botpressWebChat.open();
-      } else {
-        console.error('Botpress WebChat not found on window');
-      }
+      // Wait a bit for the global to be available
+      setTimeout(() => {
+        if (window.botpressWebChat) {
+          window.botpressWebChat.init({
+            botId: 'e4daeba3-c296-4803-9af6-91c0c80ab5de',
+            hostUrl: 'https://cdn.botpress.cloud/webchat/v3.2',
+            messagingUrl: 'https://messaging.botpress.cloud',
+            showWidget: true,
+            mobileBreakpoint: 0,
+            // ...other options...
+          });
+          window.botpressWebChat.open();
+        } else {
+          console.error('Botpress WebChat not found on window after delay');
+        }
+      }, 500); // 500ms delay
     };
+
     script.onerror = () => {
       console.error('Failed to load Botpress WebChat script');
     };
+
     document.body.appendChild(script);
   }, []);
 
