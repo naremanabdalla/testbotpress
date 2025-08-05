@@ -9,7 +9,7 @@ function App() {
     script.src = 'https://cdn.botpress.cloud/webchat/v3.2/inject.js';
     script.defer = true;
     script.onload = () => {
-      // Wait longer for the global to be available
+      // Wait even longer for the global to be available
       setTimeout(() => {
         if (window.botpressWebChat) {
           console.log('Botpress WebChat found, initializing...');
@@ -25,7 +25,7 @@ function App() {
         } else {
           console.error('Botpress WebChat not found on window');
         }
-      }, 2000); // increased delay to 2 seconds
+      }, 5000); // increased delay to 5 seconds
     };
     document.body.appendChild(script);
   }, []);
